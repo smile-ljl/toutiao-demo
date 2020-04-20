@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h2>黑马头条</h2>
+     <h1>黑马</h1>
     <!-- 路由出口 -->
     <router-view />
   </div>
@@ -8,7 +8,12 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  data () {
+    return {}
+  },
+  methods: {},
+  created () {}
 }
 </script>
 
