@@ -108,11 +108,6 @@ export default {
       // 开启登陆中 loading...
       this.loginLoading = true
 
-      // 对于代码中的请求操作
-      // 1、接口请求可能需要重用
-      // 2、实际工作中，接口非常容易变动，改起来麻烦
-      // 我们建议的做法是把所有的请求都封装成函数然后统一的组织到模块中进行管理
-      // 这样做的好处就是：管理维护更方便，也好重用
       login(this.user).then(res => {
         console.log(res)
 
@@ -125,11 +120,12 @@ export default {
         // 关闭 loading
         this.loginLoading = false
 
+        window.localStorage.setItem('user', JSON.stringify(res.data.data))
         // 跳转到首页
         this.$router.push('/')
 
         // this.$router.push({
-        //   name: 'home'
+        //   name: 'Home'
         // })
       }).catch(err => { // 登录失败
         console.log('登录失败', err)

@@ -6,8 +6,8 @@
     </div>
     <el-dropdown>
       <div class="avatar-wrap">
-        <img class="avatar" src="http://toutiao.meiduo.site/FrvifflobfNNRM9V_ZBTI2ZaTH4n" alt="">
-        <span>用户昵称</span>
+        <img class="avatar" :src=user.photo alt="">
+        <span>{{user.name}}</span>
         <i class="el-icon-arrow-down el-icon--right"></i>
       </div>
       <el-dropdown-menu slot="dropdown">
