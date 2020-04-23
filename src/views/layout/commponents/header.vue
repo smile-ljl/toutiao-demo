@@ -1,18 +1,24 @@
 <template>
-  <div class="header-container">
+  <div class="header-container" :is-collapse="isCollapse" >
     <div>
-      <i class="el-icon-s-fold"></i>
+      <i
+        :class="{
+          'el-icon-s-fold': isCollapse,
+          'el-icon-s-unfold': !isCollapse
+        }"
+        @click="isCollapse = !isCollapse"
+      ></i>
       <span>江苏传智播客科技教育有限公司</span>
     </div>
     <el-dropdown>
       <div class="avatar-wrap">
-        <img class="avatar" :src=user.photo alt="">
+        <img class="avatar" :src="user.photo" alt="">
         <span>{{user.name}}</span>
         <i class="el-icon-arrow-down el-icon--right"></i>
       </div>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item>设置</el-dropdown-item>
-        <el-dropdown-item>退出</el-dropdown-item>
+        <el-dropdown-item @click.native="onLogout">退出</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
   </div>
@@ -28,7 +34,8 @@ export default {
   props: {},
   data () {
     return {
-      user: {} // 当前登录用户信息
+      user: {}, // 当前登录用户信息
+      isCollapse: false // 侧边菜单栏的展示状态
     }
   },
   computed: {},
@@ -44,6 +51,23 @@ export default {
     loadUserProfile () {
       getUserProfile().then(res => {
         this.user = res.data.data
+      })
+    },
+    onLogout () {
+      this.$confirm('确定退出?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 把用户的登录状态清除
+        window.localStorage.removeItem('user')
+        // 跳转到登录页面
+        this.$router.push('/login')
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
       })
     }
   }

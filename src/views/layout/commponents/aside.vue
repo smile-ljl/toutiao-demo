@@ -5,6 +5,8 @@
       text-color="#fff"
       active-text-color="#ffd04b"
       class="nav-menu"
+      router
+      :collapse="isCollapse"
       >
         <el-menu-item index="/">
           <i class="iconfont icon-xuanzhongshangcheng"></i>
@@ -39,7 +41,12 @@
 
 <script>
 export default {
-
+  name: 'AppAside',
+  props: ['is-collapse'],
+  data () {
+    return {
+    }
+  }
 }
 </script>
 

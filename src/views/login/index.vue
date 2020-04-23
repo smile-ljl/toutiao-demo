@@ -125,7 +125,7 @@ export default {
         this.$router.push('/')
 
         // this.$router.push({
-        //   name: 'Home'
+        //   name: 'home'
         // })
       }).catch(err => { // 登录失败
         console.log('登录失败', err)
