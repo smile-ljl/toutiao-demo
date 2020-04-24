@@ -70,6 +70,14 @@
       <el-table-column
       prop="date"
       label="封面">
+        <template slot-scope="scope">
+          <img v-if="scope.row.cover.images[0]"
+            class="article-cover"
+            :src="scope.row.cover.images[0]" alt="">
+          <img v-else
+            class="article-cover"
+            src="./no-cover.gif" alt="">
+        </template>
       </el-table-column>
       <el-table-column
       prop="title"
@@ -176,5 +184,8 @@ export default {
 }
 .filter-card {
   margin-bottom: 30px;
+}
+.article-cover {
+  width: 70px;
 }
 </style>
