@@ -86,7 +86,7 @@
         </template>
       </el-table-column>
       <el-table-column
-      prop="pubdata"
+      prop="pubdate"
       label="发布时间">
       </el-table-column>
       <el-table-column
