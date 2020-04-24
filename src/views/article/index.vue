@@ -30,12 +30,16 @@
             </el-radio-group>
         </el-form-item>
         <el-form-item label="频道 :">
-            <el-select v-model="form.region" placeholder="请选择">
-            <el-option
-              value="channel.id"
-              :label="channel.name"
-              v-for="(channel, index) in channels"
-              :key="index"></el-option>
+            <el-select v-model="channelId" placeholder="请选择频道">
+              <el-option
+              label="全部"
+              :value="null"
+            ></el-option>
+              <el-option
+                :value="channel.id"
+                :label="channel.name"
+                v-for="(channel, index) in channels"
+                :key="index"></el-option>
             </el-select>
         </el-form-item>
         <el-form-item label="日期 :">
@@ -133,7 +137,10 @@
 </template>
 
 <script>
-import { getArticles, getArticleChannels } from '@/api/article'
+import {
+  getArticles,
+  getArticleChannels
+} from '@/api/article'
 export default {
   name: 'ArticleIndex',
   components: {},
@@ -161,7 +168,8 @@ export default {
       totalCount: 0, // 总数据条数
       pageSize: 10, // 每页大小
       status: null, // 查询文章的状态,不传就是全部
-      channels: [] // 文章频道列表
+      channels: [], // 文章频道列表
+      channelId: null // 查询文章频道
     }
   },
   computed: {},
@@ -176,7 +184,8 @@ export default {
       getArticles({
         page,
         per_page: this.pageSize,
-        status: this.status
+        status: this.status,
+        channel_id: this.channelId
       }).then(res => {
         // this.articles = res.data.data.results
         const { results, total_count: totalCount } = res.data.data
@@ -192,7 +201,8 @@ export default {
     },
     loadChannels () {
       getArticleChannels().then(res => {
-        this.channels = res.channels
+        console.log(res)
+        this.channels = res.data.data.channels
       })
     }
   }
