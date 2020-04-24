@@ -11,3 +11,11 @@ export const getArticles = params => {
     params
   })
 }
+
+// 获取文章频道
+export const getArticleChannels = () => {
+  return Request({
+    method: 'GET',
+    url: '/mp/v1_0/channels'
+  })
+}

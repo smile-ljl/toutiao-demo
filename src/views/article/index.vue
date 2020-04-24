@@ -31,20 +31,11 @@
         </el-form-item>
         <el-form-item label="频道 :">
             <el-select v-model="form.region" placeholder="请选择">
-            <el-option value="be" label="开发者资讯" ></el-option>
-            <el-option value="be" label="ios"></el-option>
-            <el-option value="be" label="c++"></el-option>
-            <el-option value="be" label="android"></el-option>
-            <el-option value="be" label="css"></el-option>
-            <el-option value="be" label="数据库"></el-option>
-            <el-option value="be" label="区块链"></el-option>
-            <el-option value="be" label="go"></el-option>
-            <el-option value="be" label="产品"></el-option>
-            <el-option value="be" label="后端"></el-option>
-            <el-option value="be" label="linux"></el-option>
-            <el-option value="be" label="人工智能"></el-option>
-            <el-option value="be" label="php"></el-option>
-            <el-option value="be" label="javascript"></el-option>
+            <el-option
+              value="channel.id"
+              :label="channel.name"
+              v-for="(channel, index) in channels"
+              :key="index"></el-option>
             </el-select>
         </el-form-item>
         <el-form-item label="日期 :">
@@ -142,7 +133,7 @@
 </template>
 
 <script>
-import { getArticles } from '@/api/article'
+import { getArticles, getArticleChannels } from '@/api/article'
 export default {
   name: 'ArticleIndex',
   components: {},
@@ -169,12 +160,14 @@ export default {
       ],
       totalCount: 0, // 总数据条数
       pageSize: 10, // 每页大小
-      status: null // 查询文章的状态,不传就是全部
+      status: null, // 查询文章的状态,不传就是全部
+      channels: [] // 文章频道列表
     }
   },
   computed: {},
   watch: {},
   created () {
+    this.loadChannels()
     this.loadArticles(1)
   },
   mounted () {},
@@ -196,6 +189,11 @@ export default {
     },
     onCurrentChange (page) {
       this.loadArticles(page)
+    },
+    loadChannels () {
+      getArticleChannels().then(res => {
+        this.channels = res.channels
+      })
     }
   }
 }
