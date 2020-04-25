@@ -9,12 +9,12 @@
         </el-breadcrumb>
         <!-- 面包屑路径导航 -->
       </div>
-      <el-form ref="form" :model="form" label-width="60px">
+      <el-form ref="form" :model="article" label-width="60px">
         <el-form-item label="标题:">
-          <el-input v-model="form.name"></el-input>
+          <el-input v-model="article.title"></el-input>
         </el-form-item>
         <el-form-item label="内容:">
-          <el-input type="textarea" v-model="form.desc"></el-input>
+          <el-input type="textarea" v-model="article.content"></el-input>
         </el-form-item>
         <el-form-item label="封面:">
           <el-radio-group v-model="form.resource">
@@ -55,6 +55,14 @@ export default {
         type: [],
         resource: '',
         desc: ''
+      },
+      article: {
+        title: '',
+        content: '',
+        cover: {
+          type: 0,
+          images: []
+        }
       }
     }
   },
