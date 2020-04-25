@@ -32,8 +32,13 @@ export const deleteArticle = articleId => {
 
 // 新建文章
 export const addArticle = (data, draft = false) => {
+  console.log(data)
   return request({
     method: 'POST',
-    url: '/mp/v1_0/articles'
+    url: '/mp/v1_0/articles',
+    params: {
+      draft
+    },
+    data
   })
 }
