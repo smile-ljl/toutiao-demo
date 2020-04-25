@@ -29,3 +29,11 @@ export const deleteArticle = articleId => {
     url: `/mp/v1_0/articles/${articleId}`
   })
 }
+
+// 新建文章
+export const addArticle = (data, draft = false) => {
+  return request({
+    method: 'POST',
+    url: '/mp/v1_0/articles'
+  })
+}

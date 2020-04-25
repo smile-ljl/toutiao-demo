@@ -37,7 +37,7 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">发表</el-button>
+          <el-button type="primary" @click="onPublish">发表</el-button>
           <el-button>存入草稿</el-button>
         </el-form-item>
       </el-form>
@@ -72,12 +72,11 @@ export default {
   },
   mounted () {},
   methods: {
-    onSubmit () {
-      console.log('submit!')
+    onpublish () {
     },
     loadChannels () {
       getArticleChannels().then(res => {
-        console.log(res)
+        // console.log(res)
         this.channels = res.data.data.channels
       })
     }
