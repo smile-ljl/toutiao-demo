@@ -5,7 +5,7 @@
         <!-- 面包屑路径导航 -->
         <el-breadcrumb separator-class="el-icon-arrow-right">
           <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-          <el-breadcrumb-item>发布文章</el-breadcrumb-item>
+          <el-breadcrumb-item>{{$route.query.id ? '修改文章' : '发布文章'}}</el-breadcrumb-item>
         </el-breadcrumb>
         <!-- 面包屑路径导航 -->
       </div>
@@ -37,7 +37,7 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onPublish(false)">发表</el-button>
+          <el-button type="primary" @click="onPublish(false)">{{$route.query.id ? '修改' : '发表'}}</el-button>
           <el-button @click="onPublish(true)">存入草稿</el-button>
         </el-form-item>
       </el-form>
@@ -48,7 +48,9 @@
 <script>
 import {
   getArticleChannels,
-  addArticle
+  addArticle,
+  getArticle,
+  updateArticle
 } from '@/api/article'
 export default {
   name: 'PublishIndex',
@@ -72,6 +74,10 @@ export default {
   watch: {},
   created () {
     this.loadChannels()
+    if (this.$route.query.id) {
+      // console.log('aaaaa')
+      this.loadArticle()
+    }
   },
   mounted () {},
   methods: {
@@ -82,15 +88,34 @@ export default {
       })
     },
     onPublish (draft = false) {
-      addArticle(this.article, draft).then(res => {
-        // console.log(111)
-        this.$message({
-          message: '发布成功',
-          type: 'success'
+      const articleId = this.$route.query.id
+      if (articleId) {
+        updateArticle(articleId, this.article, draft).then(res => {
+          this.$message({
+            message: `${draft ? '存为草稿' : '发布'}成功`,
+            type: 'success'
+          })
+          this.$router.push('/article')
         })
+      } else {
+        addArticle(this.article, draft).then(res => {
+        // console.log(111)
+          this.$message({
+            message: '发布成功',
+            type: 'success'
+          })
+          this.$router.push('/article')
+        })
+      }
+    },
+    loadArticle () {
+      // console.log('loadArticle')
+      getArticle(this.$route.query.id).then(res => {
+        this.article = res.data.data
       })
     }
   }
+  // 方法结束
 }
 </script>
 

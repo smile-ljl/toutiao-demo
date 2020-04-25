@@ -32,7 +32,7 @@ export const deleteArticle = articleId => {
 
 // 新建文章
 export const addArticle = (data, draft = false) => {
-  console.log(data)
+  // console.log(data)
   return request({
     method: 'POST',
     url: '/mp/v1_0/articles',
@@ -40,5 +40,26 @@ export const addArticle = (data, draft = false) => {
       draft
     },
     data
+  })
+}
+
+// 编辑文章
+export const updateArticle = (articleId, data, draft = false) => {
+  // console.log(data)
+  return request({
+    method: 'PUT',
+    url: `/mp/v1_0/articles/${articleId}`,
+    params: {
+      draft
+    },
+    data
+  })
+}
+
+// 获取指定的文章
+export const getArticle = articleId => {
+  return request({
+    method: 'GET',
+    url: `/mp/v1_0/articles/${articleId}`
   })
 }
