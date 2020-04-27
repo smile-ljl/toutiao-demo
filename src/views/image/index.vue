@@ -19,73 +19,17 @@
       <!-- 按钮 -->
       <!-- 布局 -->
       <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="6" :lg="4">
+        <el-col
+        :xs="24"
+        :sm="12"
+        :md="6"
+        :lg="4"
+        v-for="(img, index) in images"
+        :key="index"
+        >
             <el-image
             height="100px"
-            src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-            fit="cover">
-            </el-image>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="6" :lg="4">
-            <el-image
-            height="100px"
-            src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-            fit="cover">
-            </el-image>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="6" :lg="4">
-            <el-image
-            height="100px"
-            src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-            fit="cover">
-            </el-image>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="6" :lg="4">
-            <el-image
-            height="100px"
-            src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-            fit="cover">
-            </el-image>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="6" :lg="4">
-            <el-image
-            height="100px"
-            src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-            fit="cover">
-            </el-image>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="6" :lg="4">
-            <el-image
-            height="100px"
-            src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-            fit="cover">
-            </el-image>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="6" :lg="4">
-            <el-image
-            height="100px"
-            src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-            fit="cover">
-            </el-image>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="6" :lg="4">
-            <el-image
-            height="100px"
-            src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-            fit="cover">
-            </el-image>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="6" :lg="4">
-            <el-image
-            height="100px"
-            src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-            fit="cover">
-            </el-image>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="6" :lg="4">
-            <el-image
-            height="100px"
-            src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+            :src="img.url"
             fit="cover">
             </el-image>
         </el-col>
@@ -96,20 +40,30 @@
 </template>
 
 <script>
+import { getImages } from '@/api/image'
 export default {
   name: 'imageIndex',
   components: {},
   props: {},
   data () {
     return {
-      radio1: '全部'
+      radio1: '全部',
+      images: []
     }
   },
   computed: {},
   watch: {},
-  created () {},
+  created () {
+    this.loadImages()
+  },
   mounted () {},
-  methods: {}
+  methods: {
+    loadImages () {
+      getImages().then(res => {
+        this.images = res.data.data.results
+      })
+    }
+  }
 }
 </script>
 
