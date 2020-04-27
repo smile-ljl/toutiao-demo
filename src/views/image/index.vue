@@ -18,7 +18,7 @@
           <el-radio-button :label="false">全部</el-radio-button>
           <el-radio-button :label="true">收藏</el-radio-button>
         </el-radio-group>
-        <el-button size="mini" type="success">上传素材</el-button>
+        <el-button size="mini" type="success" @click="dialogUploadVisible=true">上传素材</el-button>
      </div>
       <!-- 按钮 -->
       <!-- 布局 -->
@@ -40,6 +40,26 @@
       </el-row>
     <!-- 布局 -->
     </el-card>
+    <!-- 上传图片 -->
+    <el-dialog
+    title="上传图片"
+    :visible.sync="dialogUploadVisible"
+    :append-to-body="true">
+        <el-upload
+        v-if="dialogUploadVisible"
+        class="upload-demo"
+        drag
+        action="http://ttapi.research.itcast.cn/mp/v1_0/user/images"
+        :headers="uploadHeaders"
+        name="image"
+        :on-success="uploadSuccess"
+        multiple>
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+          <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+        </el-upload>
+    </el-dialog>
+    <!-- 上传图片 -->
   </div>
 </template>
 
@@ -50,9 +70,14 @@ export default {
   components: {},
   props: {},
   data () {
+    const user = JSON.parse(window.localStorage.getItem('user'))
     return {
       collect: 'false',
-      images: []
+      images: [],
+      dialogUploadVisible: false,
+      uploadHeaders: {
+        Authorization: `Bearer ${user.token}`
+      }
     }
   },
   computed: {},
@@ -71,6 +96,11 @@ export default {
     },
     onCollectChange (value) {
       this.loadImages(value)
+    },
+    uploadSuccess () {
+      this.dialogUploadVisible = false
+      // 更新素材列表
+      this.loadImages(false)
     }
   }
 }
