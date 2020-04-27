@@ -5,7 +5,7 @@ import Home from '@/views/home'
 import Layout from '@/views/layout'
 import Article from '@/views/article'
 import Publish from '@/views/publish'
-import Image from '@/views/image'
+import Image from '@/views/image/'
 
 Vue.use(VueRouter)
 

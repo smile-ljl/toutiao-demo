@@ -126,7 +126,7 @@ export default {
         new TodoItem(),
         new TodoList()
       ],
-      rules: {
+      formRules: {
         title: [
           { required: true, message: '请输入文章标题', trigger: 'blur' },
           { min: 5, max: 30, message: '长度在 5 到 30 个字符', trigger: 'blur' }
