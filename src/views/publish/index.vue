@@ -14,7 +14,12 @@
           <el-input v-model="article.title"></el-input>
         </el-form-item>
         <el-form-item label="内容:">
-          <el-input type="textarea" v-model="article.content"></el-input>
+          <el-tiptap
+            v-model="article.content"
+            :extensions="extensions"
+            placeholder="请输入文章内容"
+            height="350"
+          />
         </el-form-item>
         <el-form-item label="封面:">
           <el-radio-group v-model="article.cover.type">
@@ -52,9 +57,31 @@ import {
   getArticle,
   updateArticle
 } from '@/api/article'
+import {
+  // 需要的 extensions
+  ElementTiptap,
+  Doc,
+  Text,
+  Paragraph,
+  Heading,
+  Bold,
+  Underline,
+  Italic,
+  Strike,
+  ListItem,
+  BulletList,
+  OrderedList,
+  Image,
+  TodoItem,
+  TodoList
+} from 'element-tiptap'
+import 'element-tiptap/lib/index.css'
+import { uploadImage } from '@/api/image'
 export default {
   name: 'PublishIndex',
-  components: {},
+  components: {
+    'el-tiptap': ElementTiptap
+  },
   props: {},
   data () {
     return {
@@ -67,7 +94,33 @@ export default {
           images: []
         },
         channel_id: null
-      }
+      },
+      extensions: [
+        new Doc(),
+        new Text(),
+        new Paragraph(),
+        new Heading({ level: 5 }),
+        new Bold({ bubble: true }), // 在气泡菜单中渲染菜单按钮
+        new Image({
+          uploadRequest (file) {
+            // console.log(file)
+            const fd = new FormData()
+            fd.append('image', file)
+            return uploadImage(fd).then(res => {
+              return res.data.data.url
+            })
+          }
+          // 图片的上传方法，返回一个 Promise<url>
+        }),
+        new Underline(),
+        new Italic(),
+        new Strike(),
+        new ListItem(),
+        new BulletList(),
+        new OrderedList(),
+        new TodoItem(),
+        new TodoList()
+      ]
     }
   },
   computed: {},
