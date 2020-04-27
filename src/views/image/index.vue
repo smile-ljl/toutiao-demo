@@ -10,7 +10,7 @@
         <!-- 面包屑导航 -->
       </div>
       <!-- 按钮 -->
-      <div style="padding-bottom: 20px">
+      <div class="action-header">
         <el-radio-group
         v-model="collect"
         size="mini"
@@ -18,6 +18,7 @@
           <el-radio-button :label="false">全部</el-radio-button>
           <el-radio-button :label="true">收藏</el-radio-button>
         </el-radio-group>
+        <el-button size="mini" type="success">上传素材</el-button>
      </div>
       <!-- 按钮 -->
       <!-- 布局 -->
@@ -31,7 +32,7 @@
         :key="index"
         >
             <el-image
-            height="100px"
+            style="height: 200px"
             :src="img.url"
             fit="cover">
             </el-image>
@@ -75,4 +76,10 @@ export default {
 }
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.action-header {
+    padding-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+</style>
