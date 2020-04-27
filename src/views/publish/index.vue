@@ -9,11 +9,16 @@
         </el-breadcrumb>
         <!-- 面包屑路径导航 -->
       </div>
-      <el-form ref="form" :model="article" label-width="60px">
-        <el-form-item label="标题:">
+      <el-form
+        ref="publish-form"
+        :model="article"
+        label-width="60px"
+        :rules="formRules"
+      >
+        <el-form-item label="标题:" prop="title">
           <el-input v-model="article.title"></el-input>
         </el-form-item>
-        <el-form-item label="内容:">
+        <el-form-item label="内容:" prop="content">
           <el-tiptap
             v-model="article.content"
             :extensions="extensions"
@@ -21,7 +26,7 @@
             height="350"
           />
         </el-form-item>
-        <el-form-item label="封面:">
+        <el-form-item label="封面:" prop="">
           <el-radio-group v-model="article.cover.type">
           <el-radio :label="1">单图</el-radio>
           <el-radio :label="3">三图</el-radio>
@@ -29,7 +34,7 @@
           <el-radio :label="-1">自动</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="频道:">
+        <el-form-item label="频道:" prop="channel_id">
           <el-select
             v-model="article.channel_id"
             placeholder="请选择活动区域">
@@ -120,7 +125,30 @@ export default {
         new OrderedList(),
         new TodoItem(),
         new TodoList()
-      ]
+      ],
+      rules: {
+        title: [
+          { required: true, message: '请输入文章标题', trigger: 'blur' },
+          { min: 5, max: 30, message: '长度在 5 到 30 个字符', trigger: 'blur' }
+        ],
+        content: [
+          {
+            validator (rule, value, callback) {
+              if (value === '<p></p>') {
+                // 验证失败
+                callback(new Error('请输入文章内容'))
+              } else {
+                // 验证通过
+                callback()
+              }
+            }
+          },
+          { required: true, message: '请输入文章内容', trigger: 'blur' }
+        ],
+        channel_id: [
+          { required: true, message: '请选择频道' }
+        ]
+      }
     }
   },
   computed: {},
@@ -141,25 +169,30 @@ export default {
       })
     },
     onPublish (draft = false) {
-      const articleId = this.$route.query.id
-      if (articleId) {
-        updateArticle(articleId, this.article, draft).then(res => {
-          this.$message({
-            message: `${draft ? '存为草稿' : '发布'}成功`,
-            type: 'success'
+      this.$refs['publish-form'].validate(valid => {
+        if (!valid) {
+          return
+        }
+        const articleId = this.$route.query.id
+        if (articleId) {
+          updateArticle(articleId, this.article, draft).then(res => {
+            this.$message({
+              message: `${draft ? '存为草稿' : '发布'}成功`,
+              type: 'success'
+            })
+            this.$router.push('/article')
           })
-          this.$router.push('/article')
-        })
-      } else {
-        addArticle(this.article, draft).then(res => {
-        // console.log(111)
-          this.$message({
-            message: '发布成功',
-            type: 'success'
+        } else {
+          addArticle(this.article, draft).then(res => {
+          // console.log(111)
+            this.$message({
+              message: '发布成功',
+              type: 'success'
+            })
+            this.$router.push('/article')
           })
-          this.$router.push('/article')
-        })
-      }
+        }
+      })
     },
     loadArticle () {
       // console.log('loadArticle')
