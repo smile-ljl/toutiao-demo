@@ -120,7 +120,11 @@ export default {
         page,
         per_page: this.pageSize
       }).then(res => {
-        this.images = res.data.data.results
+        const results = res.data.data.results
+        results.forEach(img => {
+          img.loading = false
+        })
+        this.images = results
         this.totalCount = res.data.data.total_count
       })
     },
@@ -140,8 +144,10 @@ export default {
       this.loadImages(page)
     },
     onCollect (img) {
+      img.loading = true
       collectImage(img.id, !img.is_collected).then(res => {
         img.is_collected = !img.is_collected
+        img.loading = false
       })
     }
   }
