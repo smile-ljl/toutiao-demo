@@ -14,7 +14,7 @@
         <el-radio-group
         v-model="collect"
         size="mini"
-        @change="onCollectChange">
+        @change="loadImages(1)">
           <el-radio-button :label="false">全部</el-radio-button>
           <el-radio-button :label="true">收藏</el-radio-button>
         </el-radio-group>
@@ -30,12 +30,17 @@
         :lg="4"
         v-for="(img, index) in images"
         :key="index"
+        class="image-item"
         >
-            <el-image
-            style="height: 200px"
-            :src="img.url"
-            fit="cover">
-            </el-image>
+          <el-image
+          style="height: 200px"
+          :src="img.url"
+          fit="cover">
+          </el-image>
+          <div class="image-action">
+            <i class="el-icon-star-on"></i>
+            <i class="el-icon-delete-solid"></i>
+          </div>
         </el-col>
       </el-row>
     <!-- /布局 -->
@@ -135,5 +140,21 @@ export default {
     padding-bottom: 20px;
     display: flex;
     justify-content: space-between;
+}
+.image-item {
+  position: relative;
+}
+.image-action {
+  font-size: 25px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  color: rgb(231, 178, 99);
+  height: 40px;
+  background-color: rgba(204, 204, 204, .5);
+  position: absolute;
+  bottom: 4px;
+  left: 5px;
+  right: 5px;
 }
 </style>
