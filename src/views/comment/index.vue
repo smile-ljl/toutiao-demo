@@ -44,11 +44,13 @@
         >
           <template slot-scope="scope">
              <el-switch
-              v-model="scope.row.comment_status"
-              active-color="#13ce66"
-              inactive-color="#ff4949"
-              active-value="100"
-              inactive-value="0">
+                v-model="scope.row.comment_status"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                active-value="100"
+                inactive-value="0"
+                @change="onStatusChange(scope.row)"
+              >
             </el-switch>
           </template>
         </el-table-column>
@@ -68,7 +70,6 @@
   </el-card>
   </div>
 </template>
-
 <script>
 import { getArticles } from '@/api/article'
 
@@ -118,6 +119,9 @@ export default {
       }).then(res => {
         this.articles = res.data.data.results
       })
+    },
+    onStatusChange (article) {
+      console.log(article)
     }
   }
 }
