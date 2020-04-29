@@ -39,15 +39,22 @@
           </el-image>
           <div class="image-action">
             <el-button
-               type="warning"
+              type="warning"
               :icon="img.is_collected ? 'el-icon-star-on' : 'el-icon-star-off'"
               circle
               size="small"
               @click="onCollect(img)"
               :loading="img.loading"
             ></el-button>
-            <i class="el-icon-delete-solid"></i>
-            <!-- <el-button size="mini" icon="el-icon-delete-solid" circle></el-button>  -->
+            <!-- <i class="el-icon-delete-solid"></i> -->
+            <el-button
+              size="small"
+              icon="el-icon-delete-solid"
+              type="danger"
+              circle
+              :loading="img.loading"
+              @click="onDelete(img)"
+            ></el-button>
           </div>
         </el-col>
       </el-row>
@@ -87,7 +94,7 @@
 </template>
 
 <script>
-import { getImages, collectImage } from '@/api/image'
+import { getImages, collectImage, deleteImage } from '@/api/image'
 export default {
   name: 'imageIndex',
   components: {},
@@ -148,6 +155,14 @@ export default {
       collectImage(img.id, !img.is_collected).then(res => {
         img.is_collected = !img.is_collected
         img.loading = false
+      })
+    },
+    onDelete (img) {
+      this.loading = true
+      deleteImage(img.id).then(res => {
+        // 重新加载数据列表
+        this.loadImages(this.page)
+        this.loading = false
       })
     }
   }
