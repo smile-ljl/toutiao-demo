@@ -42,7 +42,8 @@
               :class="{
                 'el-icon-star-on': img.is_collected,
                 'el-icon-star-off': !img.is_collected
-              }"></i>
+              }"
+              @click="onCollect(img)"></i>
             <i class="el-icon-delete-solid"></i>
           </div>
         </el-col>
@@ -83,7 +84,7 @@
 </template>
 
 <script>
-import { getImages } from '@/api/image'
+import { getImages, collectImage } from '@/api/image'
 export default {
   name: 'imageIndex',
   components: {},
@@ -134,6 +135,11 @@ export default {
     },
     onPageChange (page) {
       this.loadImages(page)
+    },
+    onCollect (img) {
+      collectImage(img.id, !img.is_collected).then(res => {
+        img.is_collected = !img.is_collected
+      })
     }
   }
 }
