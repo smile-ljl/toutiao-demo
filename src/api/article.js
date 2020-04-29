@@ -70,6 +70,7 @@ export const updateCommentStatus = (articleId, allowComment) => {
     method: 'PUT',
     url: '/mp/v1_0/comments/status',
     params: {
+      // 对象的属性名不受代码规范限制
       article_id: articleId
     },
     data: {
