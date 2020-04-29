@@ -7,7 +7,7 @@
           <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
           <el-breadcrumb-item>素材管理</el-breadcrumb-item>
         </el-breadcrumb>
-        <!-- 面包屑导航 -->
+        <!-- /面包屑导航 -->
       </div>
       <!-- 按钮 -->
       <div class="action-header">
@@ -20,7 +20,7 @@
         </el-radio-group>
         <el-button size="mini" type="success" @click="dialogUploadVisible=true">上传素材</el-button>
      </div>
-      <!-- 按钮 -->
+      <!-- /按钮 -->
       <!-- 布局 -->
       <el-row :gutter="10">
         <el-col
@@ -38,7 +38,17 @@
             </el-image>
         </el-col>
       </el-row>
-    <!-- 布局 -->
+    <!-- /布局 -->
+    <!-- 分页组件 -->
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :total="totalCount"
+      :page-size="pageSize"
+      :current-page.sync="page"
+      @current-change="onPageChange">
+    </el-pagination>
+    <!-- /分页组件 -->
     </el-card>
     <!-- 上传图片 -->
     <el-dialog
@@ -59,7 +69,7 @@
           <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
         </el-upload>
     </el-dialog>
-    <!-- 上传图片 -->
+    <!-- /上传图片 -->
   </div>
 </template>
 
@@ -77,30 +87,44 @@ export default {
       dialogUploadVisible: false,
       uploadHeaders: {
         Authorization: `Bearer ${user.token}`
-      }
+      },
+      totalCount: 0,
+      pageSize: 12,
+      page: 1
     }
   },
   computed: {},
   watch: {},
   created () {
-    this.loadImages(false)
+    this.loadImages(1)
   },
   mounted () {},
   methods: {
-    loadImages (collect = false) {
+    loadImages (page = 1) {
+      this.page = page
       getImages({
-        collect
+        collect: this.collect,
+        page,
+        per_page: this.pageSize
       }).then(res => {
         this.images = res.data.data.results
+        this.totalCount = res.data.data.total_count
       })
     },
-    onCollectChange (value) {
-      this.loadImages(value)
+    onCollectChange () {
+      this.loadImages(1)
     },
     uploadSuccess () {
       this.dialogUploadVisible = false
       // 更新素材列表
-      this.loadImages(false)
+      this.loadImages(this.page)
+      this.$message({
+        type: 'success',
+        message: '上传成功'
+      })
+    },
+    onPageChange (page) {
+      this.loadImages(page)
     }
   }
 }
