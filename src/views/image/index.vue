@@ -38,7 +38,11 @@
           fit="cover">
           </el-image>
           <div class="image-action">
-            <i class="el-icon-star-on"></i>
+            <i
+              :class="{
+                'el-icon-star-on': img.is_collected,
+                'el-icon-star-off': !img.is_collected
+              }"></i>
             <i class="el-icon-delete-solid"></i>
           </div>
         </el-col>
