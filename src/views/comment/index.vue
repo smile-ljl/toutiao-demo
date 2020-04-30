@@ -58,11 +58,13 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
+        :current-page.sync="page"
+        :page-sizes="[10, 20, 30, 50]"
+        :page-size.sync="pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="400">
+        :total="toutalCount"
+        background
+      >
       </el-pagination>
       <!-- /分页管理 -->
   </el-card>
@@ -80,25 +82,10 @@ export default {
   props: {},
   data () {
     return {
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }],
-      currentPage4: 1,
-      articles: [] // 文章数据列表
+      articles: [], // 文章数据列表
+      totalCount: 30,
+      pageSize: 10,
+      page: 1
     }
   },
   computed: {},
@@ -108,15 +95,18 @@ export default {
   },
   mounted () {},
   methods: {
-    handleSizeChange (val) {
-      console.log(`每页 ${val} 条`)
+    handleSizeChange () {
+      this.loadArticles(1)
     },
-    handleCurrentChange (val) {
-      console.log(`当前页: ${val}`)
+    handleCurrentChange (page) {
+      this.loadArticles(page)
     },
-    loadArticles () {
+    loadArticles (page = 1) {
+      this.page = page
       getArticles({
-        response_type: 'comment'
+        response_type: 'comment',
+        page,
+        per_page: this.pageSize
       }).then(res => {
         // this.articles = res.data.data.results
         const { results } = res.data.data
@@ -124,7 +114,8 @@ export default {
           article.statusDisabled = false
         })
         this.articles = results
-        console.log(this.articles)
+        // console.log(this.articles)
+        this.totalCount = res.data.data.total_count
       })
     },
     onStatusChange (article) {
