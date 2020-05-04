@@ -83,7 +83,7 @@ export default {
   data () {
     return {
       articles: [], // 文章数据列表
-      totalCount: 30,
+      totalCount: 0,
       pageSize: 10,
       page: 1
     }
